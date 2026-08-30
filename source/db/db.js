@@ -11,3 +11,20 @@ export const pool = new Pool({
 });
 
 export const db = drizzle(pool);
+
+// Verify database connection
+pool.on('connect', () => {
+  console.log('✓ Database connection established');
+});
+
+pool.on('error', (err) => {
+  console.error('✗ Database connection error:', err);
+});
+
+// Test connection on startup
+try {
+  await pool.query('SELECT 1');
+  console.log('✓ Database is accessible');
+} catch (error) {
+  console.error('✗ Database connection failed:', error.message);
+}
